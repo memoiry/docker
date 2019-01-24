@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 SHELL_PATH="$( cd "$( dirname "$0" )" && pwd )"
-
 DOCKER_NAME="${USER}_in_deep_docker"
 
 # remove the docker if there also exists the docker.
@@ -36,9 +35,9 @@ eval ${DOCKER_CMD} run -it \
   -v $HOME/.dotfiles:$HOME/.dotfiles \
   -v /etc/localtime:/etc/localtime:ro \
   -v $SHELL_PATH:/scripts \
-  -v $PWD:$HOME/workspace \
-  -w $HOME/workspace \
-  --hostname in_dev_docker \
+  -v $HOME/work:$HOME/work \
+  -w $HOME/work \
+  --hostname in_deep_docker \
   $IMG
 
 docker exec ${DOCKER_NAME} bash -c /scripts/docker_adduser.sh
