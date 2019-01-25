@@ -92,6 +92,18 @@ RUN  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         mxboard
 
 # ==================================================================
+# pytorch
+# ------------------------------------------------------------------
+
+RUN python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+        future \
+        protobuf \
+        enum34 \
+        typing \
+        torchvision \
+        torch
+
+# ==================================================================
 # mxnet
 # ------------------------------------------------------------------
 
@@ -100,32 +112,32 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         graphviz \
         && \
 
-    python -m pip --no-cache-dir install --upgrade \
-        mxnet-cu92 \
+    python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade\
+        mxnet-cu100 \
         graphviz
-
-# ==================================================================
-# pytorch
-# ------------------------------------------------------------------
-
-RUN python -m pip --no-cache-dir install --upgrade \
-        future \
-        protobuf \
-        enum34 \
-        typing \
-      torchvision_nightly \
-        && \
-    python -m pip --no-cache-dir install --upgrade \
-        torch_nightly -f \
-        https://download.pytorch.org/whl/nightly/cu92/torch_nightly.html
 
 # ==================================================================
 # tensorflow
 # ------------------------------------------------------------------
 
-RUN python -m pip --no-cache-dir install --upgrade \
-        tensorflow-gpu \
-        tensorboard 
+RUN python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+        tf-nightly-gpu
+
+# ==================================================================
+# ex tools
+# ------------------------------------------------------------------
+
+RUN python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+        ipython \
+        fire
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        openjdk-8-jdk
+
+# RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list &&\
+#     curl https://bazel.build/bazel-release.pub.gpg | apt-key add - &&\
+#     apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+#         bazel
 
 # ==================================================================
 # config & cleanup

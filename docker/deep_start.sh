@@ -36,6 +36,7 @@ eval ${DOCKER_CMD} run -it \
   -v /etc/localtime:/etc/localtime:ro \
   -v $SHELL_PATH:/scripts \
   -v $HOME/work:$HOME/work \
+  -v /private:/private \
   -w $HOME/work \
   --hostname in_deep_docker \
   $IMG
