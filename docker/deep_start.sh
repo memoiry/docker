@@ -32,13 +32,17 @@ eval ${DOCKER_CMD} run -it \
   -e DOCKER_USER_ID=$USER_ID \
   -e DOCKER_GRP=$GRP \
   -e DOCKER_GRP_ID=$GRP_ID \
+  -e JUPYTER_ENABLE_LAB=yes \
   -v $HOME/.dotfiles:$HOME/.dotfiles \
   -v /etc/localtime:/etc/localtime:ro \
   -v $SHELL_PATH:/scripts \
   -v $HOME/work:$HOME/work \
   -v /private:/private \
   -w $HOME/work \
+  -p 8888:8888 \
+  -p 6007:6006 \
   --hostname in_deep_docker \
+  --ipc=host \
   $IMG
 
 docker exec ${DOCKER_NAME} bash -c /scripts/docker_adduser.sh

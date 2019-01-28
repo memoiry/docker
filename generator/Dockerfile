@@ -134,11 +134,23 @@ RUN python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/si
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         openjdk-8-jdk
 
-# RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list &&\
-#     curl https://bazel.build/bazel-release.pub.gpg | apt-key add - &&\
-#     apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#         bazel
+RUN python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+        jupyterlab
 
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list &&\
+    curl https://bazel.build/bazel-release.pub.gpg | apt-key add - &&\
+    apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        bazel
+
+RUN git clone https://github.com/cocodataset/cocoapi.git &&\
+    cd cocoapi/PythonAPI &&\
+    python setup.py build_ext install &&\
+    cd .. && rm -rf cocoapi
+
+RUN python -m pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+        tensorboardX \
+        ninja \
+        yacs 
 # ==================================================================
 # config & cleanup
 # ------------------------------------------------------------------
@@ -147,5 +159,3 @@ RUN ldconfig && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* ~/*
-
-EXPOSE 6006
